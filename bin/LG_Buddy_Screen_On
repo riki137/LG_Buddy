@@ -30,5 +30,14 @@ fi
 sleep 8
 
 # Set the input - this also turns on the TV if it's in standby
-/usr/bin/LG_Buddy_PIP/bin/bscpylgtvcommand "$tv_ip" set_input "$input" 2>&1 || \
-    echo "set_input failed (TV may need more time to wake)"
+max_attempts=5
+attempt=1
+while [ $attempt -le $max_attempts ]; do
+    if /usr/bin/LG_Buddy_PIP/bin/bscpylgtvcommand "$tv_ip" set_input "$input" >/dev/null 2>&1; then
+        echo "Successfully set input and turned on TV."
+        break
+    fi
+    echo "set_input failed (attempt $attempt/$max_attempts), retrying in 2s..."
+    sleep 2
+    ((attempt++))
+done
