@@ -39,24 +39,26 @@ pc_input=${pc_input:-$default_pc_input}
 
 echo "Updating configuration files..."
 
-sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" bin/LG_Buddy_Startup
-sed -i "s/tv_mac=\"[^\"]*\"/tv_mac=\"$tv_mac\"/" bin/LG_Buddy_Startup
-sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" bin/LG_Buddy_Startup
+TARGET_DIR=${1:-bin}
 
-sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" bin/LG_Buddy_Shutdown
-sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" bin/LG_Buddy_Shutdown
+sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" "$TARGET_DIR"/LG_Buddy_Startup
+sed -i "s/tv_mac=\"[^\"]*\"/tv_mac=\"$tv_mac\"/" "$TARGET_DIR"/LG_Buddy_Startup
+sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" "$TARGET_DIR"/LG_Buddy_Startup
 
-sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" bin/LG_Buddy_sleep_pre
-sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" bin/LG_Buddy_sleep_pre
+sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" "$TARGET_DIR"/LG_Buddy_Shutdown
+sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" "$TARGET_DIR"/LG_Buddy_Shutdown
 
-sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" bin/LG_Buddy_sleep
-sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" bin/LG_Buddy_sleep
+sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" "$TARGET_DIR"/LG_Buddy_sleep_pre
+sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" "$TARGET_DIR"/LG_Buddy_sleep_pre
 
-sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" bin/LG_Buddy_Screen_Off
-sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" bin/LG_Buddy_Screen_Off
+sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" "$TARGET_DIR"/LG_Buddy_sleep
+sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" "$TARGET_DIR"/LG_Buddy_sleep
 
-sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" bin/LG_Buddy_Screen_On
-sed -i "s/tv_mac=\"[^\"]*\"/tv_mac=\"$tv_mac\"/" bin/LG_Buddy_Screen_On
-sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" bin/LG_Buddy_Screen_On
+sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" "$TARGET_DIR"/LG_Buddy_Screen_Off
+sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" "$TARGET_DIR"/LG_Buddy_Screen_Off
+
+sed -i "s/tv_ip=\"[^\"]*\"/tv_ip=\"$tv_ip\"/" "$TARGET_DIR"/LG_Buddy_Screen_On
+sed -i "s/tv_mac=\"[^\"]*\"/tv_mac=\"$tv_mac\"/" "$TARGET_DIR"/LG_Buddy_Screen_On
+sed -i "s/input=\"[^\"]*\"/input=\"$pc_input\"/" "$TARGET_DIR"/LG_Buddy_Screen_On
 
 echo "Configuration updated successfully."

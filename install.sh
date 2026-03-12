@@ -21,11 +21,9 @@ read -p "Press Enter to continue (or Ctrl+C to cancel and install prerequisites 
 
 # 2. CONFIGURE SCRIPTS
 echo "Running configuration script..."
-# Make sure configure.sh is executable
-if [ ! -x "./configure.sh" ]; then
-    chmod +x ./configure.sh
-fi
-./configure.sh
+TMP_BIN_DIR=$(mktemp -d)
+cp -r ./bin/* "$TMP_BIN_DIR/"
+bash ./configure.sh "$TMP_BIN_DIR"
 echo "Configuration complete."
 
 # 3. CREATE VIRTUAL ENVIRONMENT
@@ -40,14 +38,14 @@ echo "Done."
 
 # 5. COPY SCRIPTS AND MAKE EXECUTABLE
 echo "Copying scripts to system directories and making executable..."
-sudo cp ./bin/LG_Buddy_Startup /usr/bin/
-sudo cp ./bin/LG_Buddy_Shutdown /usr/bin/
-sudo cp ./bin/LG_Buddy_Screen_On /usr/bin/
-sudo cp ./bin/LG_Buddy_Screen_Off /usr/bin/
-sudo cp ./bin/LG_Buddy_Screen_Monitor /usr/bin/
-sudo cp ./bin/LG_Buddy_sleep_pre /usr/bin/
+sudo cp "$TMP_BIN_DIR/LG_Buddy_Startup" /usr/bin/
+sudo cp "$TMP_BIN_DIR/LG_Buddy_Shutdown" /usr/bin/
+sudo cp "$TMP_BIN_DIR/LG_Buddy_Screen_On" /usr/bin/
+sudo cp "$TMP_BIN_DIR/LG_Buddy_Screen_Off" /usr/bin/
+sudo cp "$TMP_BIN_DIR/LG_Buddy_Screen_Monitor" /usr/bin/
+sudo cp "$TMP_BIN_DIR/LG_Buddy_sleep_pre" /usr/bin/
 sudo mkdir -p /etc/NetworkManager/dispatcher.d/pre-down.d
-sudo cp ./bin/LG_Buddy_sleep /etc/NetworkManager/dispatcher.d/pre-down.d/LG_Buddy_sleep
+sudo cp "$TMP_BIN_DIR/LG_Buddy_sleep" /etc/NetworkManager/dispatcher.d/pre-down.d/LG_Buddy_sleep
 sudo chmod +x /usr/bin/LG_Buddy_Startup
 sudo chmod +x /usr/bin/LG_Buddy_Shutdown
 sudo chmod +x /usr/bin/LG_Buddy_Screen_On
@@ -98,6 +96,10 @@ case "$REPLY" in
         echo "Leaving all services enabled (startup, shutdown, sleep, wake)."
         ;;
 esac
+
+# Clean up
+rm -rf "$TMP_BIN_DIR"
+
 
 
 echo "Installation complete!"
